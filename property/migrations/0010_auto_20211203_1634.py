@@ -8,11 +8,19 @@ def get_pure_phone_number(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
     for flat in Flat.objects.all():
         phone_number = flat.owners_phonenumber
-        phone_number = phonenumbers.parse(phone_number, 'RU')
-        # phone_number = phonenumbers.format_number(phone_number, phonenumbers.PhoneNumberFormat.E164)
-        phone_number = phone_number.national_number
-        flat.owner_pure_phone = phone_number
-        flat.save()
+        try:
+            phone_number = phonenumbers.parse(phone_number, 'RU')
+        except:
+            flat.owner_pure_phone = None
+            flat.save()
+            continue
+
+        if len(str(phone_number.national_number)) < 10:
+            flat.owner_pure_phone = None
+        else:
+            phone_number = phonenumbers.format_number(phone_number, phonenumbers.PhoneNumberFormat.E164)
+            flat.owner_pure_phone = phone_number
+            flat.save()
 
 
 def move_backward(apps, schema_editor):
