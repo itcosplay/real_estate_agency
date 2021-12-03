@@ -3,6 +3,8 @@ from django.db.models.deletion import CASCADE
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 
+from phonenumber_field.modelfields import PhoneNumberField
+
 
 User = get_user_model()
 
@@ -10,6 +12,10 @@ User = get_user_model()
 class Flat(models.Model):
     owner = models.CharField('ФИО владельца', max_length=200)
     owners_phonenumber = models.CharField('Номер владельца', max_length=20)
+    owner_pure_phone = PhoneNumberField (
+        'Нормализированный номер владельца',
+        blank=True
+    )
     created_at = models.DateTimeField (
         'Когда создано объявление',
         default=timezone.now,
@@ -59,7 +65,8 @@ class Flat(models.Model):
     liked_by = models.ManyToManyField (
         User,
         related_name='liked_flats',
-        verbose_name='Кто лайкнул'
+        verbose_name='Кто лайкнул',
+        blank=True
     )
 
     def __str__(self):
