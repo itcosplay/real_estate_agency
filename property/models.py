@@ -1,5 +1,10 @@
 from django.db import models
+from django.db.models.deletion import CASCADE
 from django.utils import timezone
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
 
 
 class Flat(models.Model):
@@ -50,3 +55,25 @@ class Flat(models.Model):
 
     def __str__(self):
         return f'{self.town}, {self.address} ({self.price}р.)'
+
+
+class Claim(models.Model):
+    user = models.ForeignKey (
+        User,
+        on_delete=CASCADE,
+        related_name='claims',
+        verbose_name='Кто жаловался'
+    )
+    flat = models.ForeignKey (
+        Flat,
+        on_delete=CASCADE,
+        related_name='claims',
+        verbose_name='Квартира на которую пожаловались'
+    )
+    text = models.TextField (
+        blank=True,
+        verbose_name='Текст жалобы'
+    )
+
+    def __str__(self):
+        return f'{self.text}'
