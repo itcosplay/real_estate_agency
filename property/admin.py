@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from .models import Flat
 from .models import Claim
+from .models import Owner
 
 @admin.register(Flat)
 class FlatAdmin(admin.ModelAdmin):
@@ -17,3 +18,8 @@ class FlatAdmin(admin.ModelAdmin):
 class ClaimAdmin(admin.ModelAdmin):
     list_display = ['user', 'flat', 'text']
     raw_id_fields = ['user']
+
+
+@admin.register(Owner)
+class OwnerAdmin(admin.ModelAdmin):
+    raw_id_fields = ['flats']
