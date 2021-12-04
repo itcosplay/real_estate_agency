@@ -4,6 +4,11 @@ from .models import Flat
 from .models import Claim
 from .models import Owner
 
+
+class OwnersInline(admin.TabularInline):
+    model = Owner.flats.through
+    raw_id_fields = ['owner']
+
 @admin.register(Flat)
 class FlatAdmin(admin.ModelAdmin):
     search_fields = ['town','address']
@@ -12,8 +17,10 @@ class FlatAdmin(admin.ModelAdmin):
     list_editable = ['new_building']
     list_filter = ['new_building']
     raw_id_fields = ['liked_by']
-
-
+    inlines = [OwnersInline]
+    
+    
+    
 @admin.register(Claim)
 class ClaimAdmin(admin.ModelAdmin):
     list_display = ['user', 'flat', 'text']
@@ -23,3 +30,5 @@ class ClaimAdmin(admin.ModelAdmin):
 @admin.register(Owner)
 class OwnerAdmin(admin.ModelAdmin):
     raw_id_fields = ['flats']
+    
+    
