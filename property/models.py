@@ -10,17 +10,6 @@ User = get_user_model()
 
 
 class Flat(models.Model):
-    # owners = models.ManyToManyField(Owner)
-    # owners_phonenumber = models.CharField(
-    #     'Номер владельца', 
-    #     max_length=20,
-    #     db_index=True
-    # )
-    # owner_pure_phone = PhoneNumberField (
-    #     'Нормализированный номер владельца',
-    #     blank=True,
-    #     db_index=True
-    # )
     created_at = models.DateTimeField (
         'Когда создано объявление',
         default=timezone.now,
