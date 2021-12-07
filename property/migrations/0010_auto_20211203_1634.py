@@ -5,6 +5,7 @@ from django.db import migrations
 
 
 def get_pure_phone_number(apps, schema_editor):
+    national_number_length = 10
     Flat = apps.get_model('property', 'Flat')
     for flat in Flat.objects.all():
         phone_number = flat.owners_phonenumber
@@ -15,10 +16,13 @@ def get_pure_phone_number(apps, schema_editor):
             flat.save()
             continue
 
-        if len(str(phone_number.national_number)) < 10:
+        if len(str(phone_number.national_number)) < national_number_length:
             flat.owner_pure_phone = None
         else:
-            phone_number = phonenumbers.format_number(phone_number, phonenumbers.PhoneNumberFormat.E164)
+            phone_number = phonenumbers.format_number(
+                phone_number, 
+                phonenumbers.PhoneNumberFormat.E164
+            )
             flat.owner_pure_phone = phone_number
             flat.save()
 
