@@ -7,14 +7,10 @@ def set_old_or_new_building(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
 
     for flat in Flat.objects.all():
-        if flat.construction_year >= 2015:
-            flat.new_building = True
-        else:
-            flat.new_building = False
-        
+        flat.new_building = flat.construction_year >= 2015
         flat.save()
 
-    
+
 def move_backward(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
     for flat in Flat.objects.all():
